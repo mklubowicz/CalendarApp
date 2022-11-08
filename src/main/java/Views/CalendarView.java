@@ -2,17 +2,25 @@ package Views;
 
 import Controllers.CalendarController;
 import Controllers.MainMenuController;
+import Models.Task;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
 
+import javax.naming.ldap.Control;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+
+import static Models.Task.getAll;
 
 public class CalendarView extends View{
 
     public LocalDate date = java.time.LocalDate.now();
+
+    public String name ="";
+    public Task selectedTask = null;
     public CalendarView(){
         super("Calendar");
         Panel panel = Panels.horizontal();
@@ -20,19 +28,34 @@ public class CalendarView extends View{
         Panel tablePanel = new Panel();
         Panel rightPanel = Panels.vertical();
 
+
+        Table<Object> table = new Table<Object>("");
+
         ActionListBox actionList = new ActionListBox();
         actionList
                 .addItem("Add", () -> {
+                    ((CalendarController)Controller).AddTask(table);
 
                 })
                 .addItem("Edit", () -> {
-
+                    ((CalendarController)Controller).EditTask(table,name);
                 })
                 .addItem("Delete", () -> {
-
+                    ((CalendarController)Controller).DeleteTask(table,name);
                 })
                 .setPreferredSize(new TerminalSize(10,25))
                 .setEnabled(false);
+
+        table.setSelectAction(()->{
+            List<Task> taskList = Task.search(date);
+            selectedTask = taskList.stream()
+                    .filter(task->taskList.indexOf(task) ==  table.getSelectedRow())
+                    .findFirst()
+                    .get();
+            name = selectedTask.getName();
+            actionList.setEnabled(true);
+            setFocusedInteractable(actionList);
+        });
 
         rightPanel.addComponent(topPanel).addComponent(tablePanel);
         panel.addComponent(actionList).addComponent(rightPanel);
@@ -42,8 +65,6 @@ public class CalendarView extends View{
 
 
         tablePanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
-        Table<Object> table = new Table<Object>("");
-
         Label currentDate = new Label(date.toString());
 
         Button prevDateButton = new Button("<-",()-> {
@@ -76,7 +97,9 @@ public class CalendarView extends View{
                 .withBorder(Borders.singleLine())
         );
 
-
+        panel.addComponent(new Button("Back",()->{
+            Controller.GoBack();
+        }));
         setHints(Arrays.asList(Hint.CENTERED));
         setComponent(panel);
     }

@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public class Task {
 
     public Task(LocalDate date,String name, Boolean important, String duration, String description, Category category){
@@ -70,6 +67,11 @@ public class Task {
         return description;
     }
 
+    @Override
+    public String toString(){
+        return date.toString() + name + duration + important;
+    }
+
     public static List<Task> getAll(){
         if(taskList != null){
             return taskList;
@@ -122,15 +124,34 @@ public class Task {
         save();
     }
 
-    public static void modify(Task task) {
+    public static void modify(Task task, Task updatedTask) {
+        List<Task> taskList = getAll();
+        taskList.set(taskList.indexOf(task),updatedTask);
+        save();
     }
 
 
     public static void delete(Task task) {
+        getAll().remove(task);
+        save();
     }
 
-    public static void save() {
-        List<Task> clients = getAll();
+    public static void save(){
+        List<Task> tasks = getAll();
+        try{
+            FileWriter fw = new FileWriter(User.getLoggedUser().getUsername()+"/tasks.txt");
+            tasks.stream()
+                    .forEach((Task t)->{
+                        try {
+                            fw.write(t.toString());
+                            fw.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        });
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
 }
