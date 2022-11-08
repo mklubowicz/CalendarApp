@@ -69,7 +69,7 @@ public class Task {
 
     @Override
     public String toString(){
-        return date.toString() + name + duration + important;
+        return date.toString() +" "+ name +" "+ important +" "+ duration +" "+ description +" " + category.toString();
     }
 
     public static List<Task> getAll(){
@@ -144,14 +144,21 @@ public class Task {
                     .forEach((Task t)->{
                         try {
                             fw.write(t.toString());
-                            fw.close();
+                            fw.write("\n");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         });
+            fw.close();
         }catch (IOException e){
             e.printStackTrace();
         }
 
+    }
+
+    public static int findTaskId(Task task){
+        List<Task> tasks = getAll();
+        int id = tasks.indexOf(task);
+        return id;
     }
 }

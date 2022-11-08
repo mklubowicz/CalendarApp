@@ -28,24 +28,37 @@ public class CalendarView extends View{
         Panel tablePanel = new Panel();
         Panel rightPanel = Panels.vertical();
 
-
         Table<Object> table = new Table<Object>("");
 
         ActionListBox actionList = new ActionListBox();
+        ActionListBox actionList2 = new ActionListBox();
+
         actionList
                 .addItem("Add", () -> {
                     ((CalendarController)Controller).AddTask(table);
 
                 })
+                .setPreferredSize(new TerminalSize(10,25))
+                .setEnabled(true);
+
+        actionList2
                 .addItem("Edit", () -> {
-                    ((CalendarController)Controller).EditTask(table,name);
+                    ((CalendarController)Controller).EditTask(table,selectedTask);
+                    actionList.setEnabled(true);
+                    actionList2.setEnabled(false);
                 })
                 .addItem("Delete", () -> {
-                    ((CalendarController)Controller).DeleteTask(table,name);
+                    ((CalendarController)Controller).DeleteTask(table,selectedTask);
+                    actionList.setEnabled(true);
+                    actionList2.setEnabled(false);
+                })
+                .addItem("Details", () -> {
+                    ((CalendarController)Controller).DetailsTask(selectedTask);
+                    actionList.setEnabled(true);
+                    actionList2.setEnabled(false);
                 })
                 .setPreferredSize(new TerminalSize(10,25))
                 .setEnabled(false);
-
         table.setSelectAction(()->{
             List<Task> taskList = Task.search(date);
             selectedTask = taskList.stream()
@@ -53,12 +66,13 @@ public class CalendarView extends View{
                     .findFirst()
                     .get();
             name = selectedTask.getName();
-            actionList.setEnabled(true);
-            setFocusedInteractable(actionList);
+            actionList.setEnabled(false);
+            actionList2.setEnabled(true);
+            setFocusedInteractable(actionList2);
         });
 
         rightPanel.addComponent(topPanel).addComponent(tablePanel);
-        panel.addComponent(actionList).addComponent(rightPanel);
+        panel.addComponent(actionList).addComponent(actionList2).addComponent(rightPanel);
 
         topPanel.setLayoutManager(new BorderLayout());
 
