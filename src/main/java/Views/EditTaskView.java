@@ -47,7 +47,13 @@ public class EditTaskView extends View{
 
         panel.addComponent(new Button("Edit",()->{
 
-            ((EditTaskController)Controller).EditTask(table,task,new Task(LocalDate.parse(dateTextBox.getText()),nameTextBox.getText(),importantCheckBox.isEnabled(),durationTextBox.getText(),descriptionTextBox.getText(),new Category(categoryTextBox.getText())));
+            ((EditTaskController)Controller).EditTask(table,task,new Task(
+                    LocalDate.parse(dateTextBox.getText()),
+                    nameTextBox.getText(),
+                    importantCheckBox.isChecked(),
+                    durationTextBox.getText(),
+                    descriptionTextBox.getText(),
+                    new Category(categoryTextBox.getText())),dateTextBox.getText());
             Controller.CancelAction();
         }));
 

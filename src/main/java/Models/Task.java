@@ -124,10 +124,20 @@ public class Task {
         save();
     }
 
-    public static void modify(Task task, Task updatedTask) {
+    public static void edit(int id, Task updatedTask) {
         List<Task> taskList = getAll();
-        taskList.set(taskList.indexOf(task),updatedTask);
+        taskList.set(id,updatedTask);
         save();
+    }
+    public static List<Task> listOfTasksForDate(LocalDate date){
+        List<Task> tmp = new ArrayList<Task>() ;
+        List<Task> tasks = getAll();
+        for(Task t : tasks){
+            if(t.getDate().equals(date)){
+                tmp.add(t);
+            }
+        }
+        return tmp;
     }
 
 
@@ -156,9 +166,7 @@ public class Task {
 
     }
 
-    public static int findTaskId(Task task){
-        List<Task> tasks = getAll();
-        int id = tasks.indexOf(task);
-        return id;
+    public static int findTaskId(List<Task> tasks,Task task){
+        return tasks.indexOf(task);
     }
 }
