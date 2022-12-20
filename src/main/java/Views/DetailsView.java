@@ -17,7 +17,7 @@ public class DetailsView extends View{
         Container container = getContentPane();
         container.add(panel);
         setup();
-        setSize(300,300);
+        setSize(250,250);
     }
 
     public void createComponents(Task task) {
@@ -40,6 +40,8 @@ public class DetailsView extends View{
 
         panel.add(new JLabel("Category: "));
         panel.add(new JLabel(task.getCategory()));
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
     }
 }

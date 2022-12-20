@@ -4,4 +4,5 @@
 2022-12-19 ZTP true 10-12 Pracownia_specialistyczna Uczelnia
 2022-12-21 SM true 12-14 PS Uczelnia
 2022-12-22 MVC true 10-12 .Net_MVC Uczelnia
-2022-12-21 KCK true 15-17 Prezentacja projektu
+2022-12-21 KCK true 18-20 Prezentacja projektu
+2022-12-20 test true test test test

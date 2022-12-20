@@ -17,7 +17,7 @@ public class AddTaskController extends Controller{
         Task.add(task);
         if(task.getDate().equals(LocalDate.now())){
             DefaultTableModel model = (DefaultTableModel)table.getModel();
-            model.addRow(task.toTableRow());
+            model.addRow(task.toSuperTableRow());
         }
     }
 

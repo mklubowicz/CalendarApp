@@ -26,7 +26,7 @@ public class DeleteTaskView extends View{
         Container container = getContentPane();
         container.add(panel);
         setup();
-        setSize(200,200);
+        setSize(300,100);
     }
     public void createComponents(JTable table, Task task){
         panel.setLayout(new BorderLayout());

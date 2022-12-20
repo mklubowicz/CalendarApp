@@ -111,6 +111,8 @@ public class Task {
     public Object[] toTableRow() {
         return new Object[] { name, duration, category, important};
     }
+
+    public Object[] toSuperTableRow() { return new Object[] { name , duration, category, important, "Delete", "Details"};}
     public LocalDate getDate() {
         return date;
     }
