@@ -2,14 +2,9 @@ package Views;
 
 import Controllers.DeleteTaskController;
 import Models.Task;
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.table.Table;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.util.Arrays;
+import java.awt.*;
 
 public class DeleteTaskView extends View{
 

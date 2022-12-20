@@ -3,7 +3,6 @@ package Views;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class AboutView extends View{
     private JPanel panel = new JPanel();

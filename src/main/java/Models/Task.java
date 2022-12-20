@@ -57,7 +57,7 @@ public class Task {
         this.category = c;
     }
     public String getCategory(){
-        return category.toString();
+        return category;
     }
 
     public void setDescription(String d){

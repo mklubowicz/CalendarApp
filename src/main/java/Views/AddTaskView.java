@@ -1,17 +1,11 @@
 package Views;
 
 import Controllers.AddTaskController;
-import Controllers.CalendarController;
-import Models.Category;
 import Models.Task;
-import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.table.Table;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Container;
 import java.time.LocalDate;
-import java.util.Arrays;
 
 public class AddTaskView extends View{
 

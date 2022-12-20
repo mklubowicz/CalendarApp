@@ -4,13 +4,9 @@ import Main.UIManager;
 import Models.CalendarTableModel;
 import Models.Task;
 import Views.*;
-import com.googlecode.lanterna.gui2.table.Table;
-import com.googlecode.lanterna.gui2.table.TableModel;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class CalendarController extends Controller{

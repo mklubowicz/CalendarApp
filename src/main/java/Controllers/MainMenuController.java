@@ -1,20 +1,15 @@
 package Controllers;
-import Main.UIManager;
-import Models.Category;
-import Models.Task;
-import Views.*;
 
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
-import com.googlecode.lanterna.gui2.table.Table;
-import com.googlecode.lanterna.gui2.table.TableModel;
+import Main.UIManager;
+import Models.Task;
+import Views.AboutView;
+import Views.CalendarView;
+import Views.LoginView;
+import Views.View;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Vector;
 
 public class MainMenuController extends Controller{
 

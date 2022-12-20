@@ -1,18 +1,9 @@
 package Views;
 
 import Controllers.LoginController;
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 
 public class LoginView extends View{

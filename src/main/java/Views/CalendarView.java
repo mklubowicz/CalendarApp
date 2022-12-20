@@ -1,21 +1,14 @@
 package Views;
 
 import Controllers.CalendarController;
-import Controllers.MainMenuController;
 import Models.ButtonColumn;
 import Models.Task;
 
-import javax.naming.ldap.Control;
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
-
-import static Models.Task.getAll;
 
 public class CalendarView extends View{
 

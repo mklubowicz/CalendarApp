@@ -1,12 +1,9 @@
 package Views;
 
-import Models.Category;
 import Models.Task;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.LocalDate;
-import java.util.Arrays;
 
 public class DetailsView extends View{
     private JPanel panel = new JPanel();

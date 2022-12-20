@@ -1,7 +1,6 @@
 package Views;
 
 import Controllers.Controller;
-import com.googlecode.lanterna.gui2.BasicWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,14 +11,14 @@ public class View extends JFrame {
 
     public View(String title) {
         super(title);
-        controlersMaker();
+        controllersMaker();
     }
     public View() {
         super();
-        controlersMaker();
+        controllersMaker();
     }
 
-    private void controlersMaker() {
+    private void controllersMaker() {
         String className = this.getClass().getSimpleName();
         className = className.substring(0, className.length() - 4);
         if (!this.getClass().getPackage().getName().equals("Views")) {
@@ -43,7 +42,6 @@ public class View extends JFrame {
         }
     }
     public void setup(){
-        setBackground(Color.white);
         setSize(900,600);
         setLocationRelativeTo(null);
         setVisible(true);

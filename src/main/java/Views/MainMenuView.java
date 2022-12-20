@@ -3,11 +3,9 @@ package Views;
 import Controllers.MainMenuController;
 import Models.User;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
-import java.util.Arrays;
 
 
 public class MainMenuView extends View {

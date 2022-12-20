@@ -2,9 +2,7 @@ package Main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Button;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UIManager {
     private static UIManager instance;
@@ -18,7 +16,7 @@ public class UIManager {
     private UIManager() throws IOException {
 
         Gui = new JFrame("CalendarApp");
-        Gui.setBackground(Color.white);
+        Gui.setBackground(Color.CYAN);
         Gui.setSize(800,800);
         Gui.setLocationRelativeTo(null);
         Gui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

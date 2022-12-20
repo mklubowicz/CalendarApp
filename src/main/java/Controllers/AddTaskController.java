@@ -1,11 +1,6 @@
 package Controllers;
 
-import Main.UIManager;
 import Models.Task;
-import Views.CalendarView;
-import Views.MainMenuView;
-import Views.View;
-import com.googlecode.lanterna.gui2.table.Table;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
