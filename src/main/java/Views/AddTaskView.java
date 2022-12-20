@@ -7,52 +7,89 @@ import Models.Task;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.Container;
 import java.time.LocalDate;
 import java.util.Arrays;
 
 public class AddTaskView extends View{
 
-    public AddTaskView(Table<Object> table){
+    private JPanel panel = new JPanel();
+
+    private JTextField nameTextField = new JTextField();
+
+    private JTextField durationTextField = new JTextField();
+
+    private JTextField dateTextField = new JTextField();
+
+    private JTextField descriptionTextField = new JTextField();
+
+    private JTextField categoryTextField = new JTextField();
+
+    private JCheckBox importantCheckBox = new JCheckBox();
+
+    private JButton addButton = new JButton("Add");
+
+    private JButton cancelButton = new JButton("Cancel");
+
+    public AddTaskView(JTable table){
         super("Add task");
-        Panel panel = new Panel();
+        createComponents(table);
+        Container container = getContentPane();
+        container.add(panel);
+        setup();
+        setSize(300,350);
 
-        TextBox nameTextBox = new TextBox();
-        TextBox durationTextBox = new TextBox();
-        TextBox dateTextBox = new TextBox();
-        TextBox descriptionTextBox = new TextBox();
-        TextBox categoryTextBox = new TextBox();
-        CheckBox importantCheckBox = new CheckBox();
+    }
+    public void createComponents(JTable table){
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
 
-        panel.addComponent(new Label("Date(YYYY-MM-DD format):"));
-        panel.addComponent(dateTextBox);
+        panel.add(new JLabel("Date(YYYY-MM-DD format):"));
+        panel.add(dateTextField);
+        dateTextField.setMaximumSize(new Dimension(200,20));
 
-        panel.addComponent(new Label("Name: "));
-        panel.addComponent(nameTextBox);
+        panel.add(new JLabel("Name: "));
+        panel.add(nameTextField);
+        nameTextField.setMaximumSize(new Dimension(200,20));
 
-        panel.addComponent(new Label("Duration: "));
-        panel.addComponent(durationTextBox);
 
-        panel.addComponent(new Label("Important: "));
-        panel.addComponent(importantCheckBox);
+        panel.add(new JLabel("Duration: "));
+        panel.add(durationTextField);
+        durationTextField.setMaximumSize(new Dimension(200,20));
 
-        panel.addComponent(new Label("Description: "));
-        panel.addComponent(descriptionTextBox);
 
-        panel.addComponent(new Label("Category: "));
-        panel.addComponent(categoryTextBox);
+        panel.add(new JLabel("Important: "));
+        panel.add(importantCheckBox);
 
-        panel.addComponent(new Button("Cancel",()->{
+        panel.add(new JLabel("Description: "));
+        panel.add(descriptionTextField);
+        descriptionTextField.setMaximumSize(new Dimension(400,20));
+
+
+        panel.add(new JLabel("Category: "));
+        panel.add(categoryTextField);
+        categoryTextField.setMaximumSize(new Dimension(200,20));
+
+
+        cancelButton.addActionListener(e -> {
             Controller.CancelAction();
-        }));
+        });
 
-        panel.addComponent(new Button("Add",()->{
-
-            ((AddTaskController)Controller).AddTask(table,new Task(LocalDate.parse(dateTextBox.getText()),nameTextBox.getText(),importantCheckBox.isEnabled(),durationTextBox.getText(),descriptionTextBox.getText(),new Category(categoryTextBox.getText())));
+        addButton.addActionListener(e -> {
+            ((AddTaskController)Controller).AddTask(table,new Task(
+                    LocalDate.parse(dateTextField.getText()),
+                    nameTextField.getText(),
+                    importantCheckBox.isEnabled(),
+                    durationTextField.getText(),
+                    descriptionTextField.getText(),
+                    categoryTextField.getText()));
             Controller.CancelAction();
-        }));
+        });
 
-        setHints(Arrays.asList(Window.Hint.CENTERED));
-        setComponent(panel);
+        panel.add(cancelButton);
+        panel.add(addButton);
+
 
     }
 }

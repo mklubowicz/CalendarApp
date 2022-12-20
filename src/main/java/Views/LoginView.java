@@ -4,50 +4,68 @@ import Controllers.LoginController;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 
 public class LoginView extends View{
+
+
+    private JPanel panel = new JPanel();
+    private JLabel logoLabel = new JLabel(new ImageIcon("src/main/resources/logo.PNG"));
+    private JLabel loginLabel = new JLabel("Login");
+    private JTextField login = new JTextField();
+    private JLabel passwordLabel = new JLabel("Password");
+    private JTextField password = new JPasswordField();
+    private JButton loginButton = new JButton("Login");
+
+    JButton exitButton = new JButton("Exit");
     public LoginView() {
         super("Sign in");
+        createComponents();
+        Container container = getContentPane();
+        container.add(panel);
+        setup();
+    }
+    private void createComponents(){
 
-        Panel panel = Panels.horizontal();
-        Panel panel2 = Panels.vertical();
-        Panel leftPanel = Panels.vertical();
-        Panel rightPanel = Panels.vertical();
-        panel.addComponent(leftPanel).addComponent(rightPanel);
+        logoLabel.setBounds(600,50,panel.getPreferredSize().width,panel.getPreferredSize().height);
+        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        panel2.addComponent(new Label("   _____           _                      _                                             \n" +
-                "  / ____|         | |                    | |                      /\\                    \n" +
-                " | |        __ _  | |   ___   _ __     __| |   __ _   _ __       /  \\     _ __    _ __  \n" +
-                " | |       / _` | | |  / _ \\ | '_ \\   / _` |  / _` | | '__|     / /\\ \\   | '_ \\  | '_ \\ \n" +
-                " | |____  | (_| | | | |  __/ | | | | | (_| | | (_| | | |       / ____ \\  | |_) | | |_) |\n" +
-                "  \\_____|  \\__,_| |_|  \\___| |_| |_|  \\__,_|  \\__,_| |_|      /_/    \\_\\ | .__/  | .__/ \n" +
-                "                                                                         | |     | |    \n" +
-                "                                                                         |_|     |_|    "));
-        panel2.addComponent(panel);
-        TextBox login = new TextBox("", TextBox.Style.SINGLE_LINE);
-        TextBox password = new TextBox("", TextBox.Style.SINGLE_LINE);
-
-        leftPanel.addComponent(new EmptySpace(new TerminalSize(0,1)));
-        rightPanel.addComponent(new EmptySpace(new TerminalSize(0,1)));
-        leftPanel.addComponent(new Label("Login"));
-        rightPanel.addComponent(login);
+        login.setColumns(1);
+        password.setColumns(1);
+        password.setMaximumSize(new Dimension(500,20));
+        login.setMaximumSize(new Dimension(500,20));
 
 
-        leftPanel.addComponent(new EmptySpace(new TerminalSize(0,1)));
-        rightPanel.addComponent(new EmptySpace(new TerminalSize(0,1)));
+        exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        exitButton.addActionListener(e -> ((LoginController)Controller).Exit());
 
-        leftPanel.addComponent(new Label("Password"));
-        rightPanel.addComponent(password.setMask('*'));
+        loginButton.addActionListener(e -> ((LoginController)Controller).Login(login.getText(), password.getText()));
 
-        leftPanel.addComponent(new EmptySpace(new TerminalSize(0,1)));
-        rightPanel.addComponent(new EmptySpace(new TerminalSize(0,1)));
-        leftPanel.addComponent(new Button("Exit", () -> ((LoginController)Controller).Exit()));
-        rightPanel.addComponent(new Button("Log in", () -> ((LoginController)Controller).Login(login.getText(), password.getText())));
+        loginLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        setHints(Arrays.asList(Hint.CENTERED));
-        setComponent(panel2);
-        setFocusedInteractable(login);
+        JSeparator separator = new JSeparator();
+        separator.setMaximumSize(new Dimension(10,200));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(separator);
+        panel.add(logoLabel);
+        panel.add(loginLabel);
+        panel.add(login);
+        panel.add(passwordLabel);
+        panel.add(password);
+        panel.add(loginButton);
+        panel.add(exitButton);
     }
 }
+
+

@@ -2,13 +2,15 @@ package Views;
 
 import Controllers.CalendarController;
 import Controllers.MainMenuController;
+import Models.ButtonColumn;
 import Models.Task;
-import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.table.Table;
 
 import javax.naming.ldap.Control;
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -17,104 +19,100 @@ import static Models.Task.getAll;
 
 public class CalendarView extends View{
 
-    public LocalDate date = java.time.LocalDate.now();
+    private LocalDate date = java.time.LocalDate.now();
+    private String name ="";
+    private Task selectedTask = null;
 
-    public String name ="";
-    public Task selectedTask = null;
-    public CalendarView(){
-        super("Calendar");
-        Panel panel = Panels.horizontal();
-        Panel topPanel = Panels.horizontal();
-        Panel tablePanel = new Panel();
-        Panel rightPanel = Panels.vertical();
+    private JPanel panel = new JPanel();
 
-        Table<Object> table = new Table<Object>("");
+    private JPanel tablePanel = new JPanel();
 
-        ActionListBox actionList = new ActionListBox();
-        ActionListBox actionList2 = new ActionListBox();
+    private JPanel datePanel = new JPanel();
 
-        actionList
-                .addItem("Add", () -> {
-                    ((CalendarController)Controller).AddTask(table);
+    private JButton addButton = new JButton("Add");
 
-                })
-                .setPreferredSize(new TerminalSize(10,25))
-                .setEnabled(true);
+    private JButton backButton = new JButton("Back");
 
-        actionList2
-                .addItem("Edit", () -> {
-                    ((CalendarController)Controller).EditTask(table,selectedTask);
-                    actionList.setEnabled(true);
-                    actionList2.setEnabled(false);
-                })
-                .addItem("Delete", () -> {
-                    ((CalendarController)Controller).DeleteTask(table,selectedTask);
-                    actionList.setEnabled(true);
-                    actionList2.setEnabled(false);
-                })
-                .addItem("Details", () -> {
-                    ((CalendarController)Controller).DetailsTask(selectedTask);
-                    actionList.setEnabled(true);
-                    actionList2.setEnabled(false);
-                })
-                .setPreferredSize(new TerminalSize(10,25))
-                .setEnabled(false);
-        table.setSelectAction(()->{
-            List<Task> taskList = Task.search(date);
-            selectedTask = taskList.stream()
-                    .filter(task->taskList.indexOf(task) ==  table.getSelectedRow())
+    private JButton prevDateButton = new JButton("<-");
+
+    private JButton nextDateButton = new JButton("->");
+
+    private ButtonColumn deleteColumn;
+
+    private ButtonColumn detailsColumn;
+
+    private JTable table = new JTable();
+
+    private JLabel dateLabel = new JLabel(date.toString());
+
+    public void createComponents(){
+        GridBagConstraints c = new GridBagConstraints();
+        datePanel.setLayout(new FlowLayout());
+        panel.setLayout(new BorderLayout());
+        addButton.addActionListener(e ->{
+            ((CalendarController)Controller).AddTask(table);
+        });
+        backButton.addActionListener(e ->{
+            Controller.GoBack();
+        });
+        ((CalendarController)Controller).SearchCalendar(table,date);
+        Action delete = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTable table = (JTable)e.getSource();
+                int modelRow = Integer.valueOf( e.getActionCommand() );
+                List<Task> taskList = Task.search(date);
+                selectedTask = taskList.stream()
+                        .filter(task->taskList.indexOf(task) ==  modelRow)
+                        .findFirst()
+                        .get();
+                ((CalendarController)Controller).DeleteTask(table,selectedTask);
+            }
+        };
+
+        Action edit = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int modelRow = Integer.valueOf( e.getActionCommand() );
+                List<Task> taskList = Task.search(date);
+                selectedTask = taskList.stream()
+                    .filter(task->taskList.indexOf(task) ==  modelRow)
                     .findFirst()
                     .get();
-            name = selectedTask.getName();
-            actionList.setEnabled(false);
-            actionList2.setEnabled(true);
-            setFocusedInteractable(actionList2);
-        });
+                ((CalendarController)Controller).DetailsTask(selectedTask);
 
-        rightPanel.addComponent(topPanel).addComponent(tablePanel);
-        panel.addComponent(actionList).addComponent(actionList2).addComponent(rightPanel);
+            }
+        };
 
-        topPanel.setLayoutManager(new BorderLayout());
+        deleteColumn = new ButtonColumn(table,delete,4);
+        detailsColumn = new ButtonColumn(table, edit,5);
 
-
-
-        tablePanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
-        Label currentDate = new Label(date.toString());
-
-        Button prevDateButton = new Button("<-",()-> {
+        prevDateButton.addActionListener(e->{
             date = date.minusDays(1);
-            currentDate.setText(date.toString());
-            ((CalendarController) Controller).SearchCalendar(table, date);
+            dateLabel.setText(date.toString());
+            ((CalendarController)Controller).SearchCalendar(table,date);
         });
-        prevDateButton.setPreferredSize(new TerminalSize(35,1));
 
-        Button nextDateButton = new Button("->",()-> {
+        nextDateButton.addActionListener(e->{
             date = date.plusDays(1);
-            currentDate.setText(date.toString());
-            ((CalendarController) Controller).SearchCalendar(table, date);
+            dateLabel.setText(date.toString());
+            ((CalendarController)Controller).SearchCalendar(table,date);
         });
-        nextDateButton.setPreferredSize(new TerminalSize(35,1));
-
-
-        prevDateButton.setLayoutData(BorderLayout.Location.LEFT);
-        currentDate.setLayoutData(BorderLayout.Location.CENTER);
-        nextDateButton.setLayoutData(BorderLayout.Location.RIGHT);
-
-        topPanel.addComponent(prevDateButton);
-        topPanel.addComponent(currentDate);
-        topPanel.addComponent(nextDateButton);
-
-
-        ((CalendarController)Controller).SearchCalendar(table, date);
-        tablePanel.addComponent(table
-                .setPreferredSize(new TerminalSize(70, 20))
-                .withBorder(Borders.singleLine())
-        );
-
-        panel.addComponent(new Button("Back",()->{
-            Controller.GoBack();
-        }));
-        setHints(Arrays.asList(Hint.CENTERED));
-        setComponent(panel);
+        datePanel.add(addButton);
+        datePanel.add(prevDateButton);
+        datePanel.add(dateLabel);
+        datePanel.add(nextDateButton);
+        datePanel.add(backButton);
+        tablePanel.add(new JScrollPane(table));
+        panel.add(datePanel,BorderLayout.PAGE_START);
+        panel.add(tablePanel);
     }
+    public CalendarView(){
+        super("Calendar");
+        createComponents();
+        Container container = getContentPane();
+        container.add(panel);
+        setup();
+    }
+
 }

@@ -1,36 +1,33 @@
 package Views;
 
-import Controllers.AboutController;
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.*;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Arrays;
 
 public class AboutView extends View{
+    private JPanel panel = new JPanel();
+    private JLabel logoLabel = new JLabel(new ImageIcon("src/main/resources/logo.PNG"));
 
+    private JLabel authorLabel = new JLabel("Developed by Michał Kłubowicz");
+
+    private JButton backButton = new JButton("Back");
     public AboutView(){
         super("Author");
-        Panel panel = Panels.vertical();
-        panel.setLayoutData(BorderLayout.Location.CENTER);
-        panel.addComponent(new Label("   _____           _                      _                                             \n" +
-                "  / ____|         | |                    | |                      /\\                    \n" +
-                " | |        __ _  | |   ___   _ __     __| |   __ _   _ __       /  \\     _ __    _ __  \n" +
-                " | |       / _` | | |  / _ \\ | '_ \\   / _` |  / _` | | '__|     / /\\ \\   | '_ \\  | '_ \\ \n" +
-                " | |____  | (_| | | | |  __/ | | | | | (_| | | (_| | | |       / ____ \\  | |_) | | |_) |\n" +
-                "  \\_____|  \\__,_| |_|  \\___| |_| |_|  \\__,_|  \\__,_| |_|      /_/    \\_\\ | .__/  | .__/ \n" +
-                "                                                                         | |     | |    \n" +
-                "                                                                         |_|     |_|    "));
-        panel.addComponent(new EmptySpace(new TerminalSize(0,1)));
-        Panel panel2 = Panels.horizontal();
-        panel.addComponent(panel2);
-        panel2.addComponent(new Label("Developed by Michał Kłubowicz"));
-        panel2.addComponent(new EmptySpace(new TerminalSize(27,2)));
-        panel2.addComponent(new Button("Back",()->{
+        createComponents();
+        Container container = getContentPane();
+        container.add(panel);
+        setup();
+    }
+    public void createComponents(){
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panel.add(logoLabel);
+        logoLabel.setMaximumSize(new Dimension(500,500));
+        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(e -> {
             Controller.GoBack();
-        }));
-
-        setHints(Arrays.asList(Window.Hint.CENTERED));
-        setComponent(panel);
-
+        });
+        panel.add(authorLabel);
+        panel.add(backButton);
     }
 }

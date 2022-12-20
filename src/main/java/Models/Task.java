@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 public class Task {
 
-    public Task(LocalDate date,String name, Boolean important, String duration, String description, Category category){
+    public Task(LocalDate date,String name, Boolean important, String duration, String description, String category){
         this.date = date;
         this.name = name;
         this.important = important;
@@ -26,7 +26,7 @@ public class Task {
     private String duration;
 
     private String description = "";
-    private Category category;
+    private String  category;
 
     private static List<Task> taskList = null;
 
@@ -53,7 +53,7 @@ public class Task {
         return duration;
     }
 
-    public void setCategory(Category c){
+    public void setCategory(String c){
         this.category = c;
     }
     public String getCategory(){
@@ -89,7 +89,7 @@ public class Task {
                                     Boolean.parseBoolean(s[2]),
                                     s[3],
                                     s[4],
-                                    new Category(s[5])
+                                    s[5]
                             ))
                     .collect(Collectors.toList());
         }catch(Exception e){
@@ -109,7 +109,7 @@ public class Task {
         return filteredTasks;
     }
     public Object[] toTableRow() {
-        return new Object[] { name, duration, category.toString(), important ? "    ❗" : ""};
+        return new Object[] { name, duration, category, important};
     }
     public LocalDate getDate() {
         return date;

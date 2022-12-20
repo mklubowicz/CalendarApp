@@ -1,43 +1,45 @@
 package Views;
 
-import Controllers.EditTaskController;
 import Models.Category;
 import Models.Task;
-import com.googlecode.lanterna.gui2.Button;
-import com.googlecode.lanterna.gui2.Label;
-import com.googlecode.lanterna.gui2.Panel;
-import com.googlecode.lanterna.gui2.Window;
 
+import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.Arrays;
 
 public class DetailsView extends View{
+    private JPanel panel = new JPanel();
+
     public DetailsView(Task task){
         super("Details");
-        Panel panel = new Panel();
-        panel.addComponent(new Label("Date:"));
-        panel.addComponent(new Label(task.getDate().toString()));
+        createComponents(task);
+        Container container = getContentPane();
+        container.add(panel);
+        setup();
+        setSize(300,300);
+    }
 
-        panel.addComponent(new Label("Name: "));
-        panel.addComponent(new Label(task.getName()));
+    public void createComponents(Task task) {
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
 
-        panel.addComponent(new Label("Duration: "));
-        panel.addComponent(new Label(task.getDuration()));
+        panel.add(new JLabel("Date:"));
+        panel.add(new JLabel(task.getDate().toString()));
 
-        panel.addComponent(new Label("Important: "));
-        panel.addComponent(new Label(task.getImportant() ? "Yes" : "No"));
+        panel.add(new JLabel("Name: "));
+        panel.add(new JLabel(task.getName()));
 
-        panel.addComponent(new Label("Description: "));
-        panel.addComponent(new Label(task.getDescription()));
+        panel.add(new JLabel("Duration: "));
+        panel.add(new JLabel(task.getDuration()));
 
-        panel.addComponent(new Label("Category: "));
-        panel.addComponent(new Label(task.getCategory()));
+        panel.add(new JLabel("Important: "));
+        panel.add(new JLabel(task.getImportant() ? "Yes" : "No"));
 
-        panel.addComponent(new Button("Cancel",()->{
-            Controller.CancelAction();
-        }));
+        panel.add(new JLabel("Description: "));
+        panel.add(new JLabel(task.getDescription()));
 
-        setHints(Arrays.asList(Window.Hint.CENTERED));
-        setComponent(panel);
+        panel.add(new JLabel("Category: "));
+        panel.add(new JLabel(task.getCategory()));
+
     }
 }

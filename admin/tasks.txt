@@ -1,3 +1,7 @@
-2022-11-06 ZTP true 10-12 Pracownia_specialistyczna Uczelnia
-2022-11-06 SM true 12-14 PS Uczelnia
-2022-11-08 MVC true 10-12 .Net_MVC Uczelnia
+2022-12-20 ZTP true 10-12 Pracownia_specialistyczna Uczelnia
+2022-12-20 SM true 12-14 PS Uczelnia
+2022-12-20 MVC true 10-12 .Net_MVC Uczelnia
+2022-12-19 ZTP true 10-12 Pracownia_specialistyczna Uczelnia
+2022-12-21 SM true 12-14 PS Uczelnia
+2022-12-22 MVC true 10-12 .Net_MVC Uczelnia
+2022-12-21 KCK true 15-17 Prezentacja projektu

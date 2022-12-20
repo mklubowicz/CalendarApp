@@ -3,9 +3,11 @@ package Views;
 import Controllers.Controller;
 import com.googlecode.lanterna.gui2.BasicWindow;
 
+import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
-public class View extends BasicWindow {
+public class View extends JFrame {
     protected Controller Controller;
 
     public View(String title) {
@@ -39,6 +41,14 @@ public class View extends BasicWindow {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+    public void setup(){
+        setBackground(Color.white);
+        setSize(900,600);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
 

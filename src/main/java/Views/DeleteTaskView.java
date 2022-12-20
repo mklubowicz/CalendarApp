@@ -6,34 +6,39 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
 
+import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
 import java.util.Arrays;
 
 public class DeleteTaskView extends View{
 
-    public DeleteTaskView(Table<Object> table, Task task){
+    private JPanel panel = new JPanel();
+
+    private JButton confirmButton = new JButton("Confirm");
+
+    private JButton cancelButton = new JButton("Cancel");
+
+    private JLabel confirmLabel = new JLabel("Are you sure u want to delete this task?");
+    public DeleteTaskView(JTable table, Task task){
         super("Delete Task");
-        Panel panel = new Panel();
-        panel.addComponent(new EmptySpace(new TerminalSize(0,1)));
-        panel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
-        panel.addComponent(new Label("Are you sure you want to delete task?"));
-        panel.addComponent(new EmptySpace(new TerminalSize(0,1)));
-        Panel panel2 = new Panel();
-        panel.addComponent(panel2);
-        panel2.setLayoutManager(new LinearLayout(Direction.HORIZONTAL));
-        panel2.addComponent(new EmptySpace(new TerminalSize(0,1)));
-
-
-        panel2.addComponent(new Button("Cancel",()->{
-            Controller.CancelAction();
-        }));
-        panel2.addComponent(new EmptySpace(new TerminalSize(7,1)));
-        panel2.addComponent(new Button("Delete",()->{
-
+        createComponents(table, task);
+        Container container = getContentPane();
+        container.add(panel);
+        setup();
+        setSize(200,200);
+    }
+    public void createComponents(JTable table, Task task){
+        panel.setLayout(new BorderLayout());
+        confirmButton.addActionListener(e -> {
             ((DeleteTaskController)Controller).DeleteTask(table, task);
             Controller.CancelAction();
-        }));
-
-        setHints(Arrays.asList(Window.Hint.CENTERED));
-        setComponent(panel);
+        });
+        cancelButton.addActionListener(e->{
+            Controller.CancelAction();
+        });
+        panel.add(confirmLabel,BorderLayout.PAGE_START);
+        panel.add(confirmButton,BorderLayout.LINE_START);
+        panel.add(cancelButton,BorderLayout.LINE_END);
     }
 }

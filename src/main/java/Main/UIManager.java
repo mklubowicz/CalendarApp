@@ -1,21 +1,14 @@
 package Main;
 
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
-import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.TerminalScreen;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
-
+import javax.swing.*;
+import java.awt.*;
+import java.awt.Button;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UIManager {
     private static UIManager instance;
-    private final MultiWindowTextGUI Gui;
-    private final AtomicBoolean quitMark;
+    private JFrame Gui;
 
 
     static void setup() throws IOException {
@@ -23,58 +16,67 @@ public class UIManager {
     }
 
     private UIManager() throws IOException {
-        Terminal terminal = new DefaultTerminalFactory().createTerminal();
-        Screen screen = new TerminalScreen(terminal);
-        screen.startScreen();
 
-
-        quitMark = new AtomicBoolean(false);
-        EmptySpace background = new EmptySpace(new TextColor.RGB(9,101,184));
-        Gui = new MultiWindowTextGUI(new SeparateTextGUIThread.Factory(),
-                screen, new DefaultWindowManager(),
-                new WindowShadowRenderer(),
-                background);
-        ((AsynchronousTextGUIThread)Gui.getGUIThread()).start();
+        Gui = new JFrame("CalendarApp");
+        Gui.setBackground(Color.white);
+        Gui.setSize(800,800);
+        Gui.setLocationRelativeTo(null);
+        Gui.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
-    public static void addWindow(Window window) {
+    public static void addWindow(JFrame frame) {
         synchronized(UIManager.class) {
-            instance.Gui.addWindow(window);
+            instance.Gui = frame;
         }
     }
 
     public static void popWindow() {
         synchronized(UIManager.class) {
-            instance.Gui.getActiveWindow().close();
+            instance.Gui.dispose();
         }
     }
 
     public static void hideTop() {
         synchronized(UIManager.class) {
-            instance.Gui.getActiveWindow().setVisible(false);
+            instance.Gui.setVisible(false);
         }
     }
 
     public static void showTop() {
         synchronized(UIManager.class) {
-            instance.Gui.getActiveWindow().setVisible(true);
+            instance.Gui.setVisible(true);
         }
     }
 
-    public static void showMessageDialog(String title, String text, MessageDialogButton button) {
+    public static void showMessageDialog(String title, String text) {
         synchronized(UIManager.class) {
-            MessageDialog.showMessageDialog(instance.Gui, title, text, button);
+            JDialog dialog = new JDialog(instance.Gui,title);
+            dialog.add(new JLabel(text));
+            dialog.setLayout(new FlowLayout());
+            JButton button = new JButton("OK");
+            button.addActionListener( e -> {
+                dialog.setVisible(false);
+                dialog.dispose();
+            });
+            dialog.add(button);
+            dialog.setLocationRelativeTo(null);
+            dialog.setSize(100,100);
+            dialog.setVisible(true);
         }
     }
 
+    public static void showDialog(JDialog dialog){
+        dialog.setLocationRelativeTo(null);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setSize(100,100);
+        dialog.setVisible(true);
+    }
     public static void closeGui() {
         synchronized(UIManager.class) {
             try {
-                instance.quitMark.set(true);
-                instance.Gui.getScreen().close();
-                ((TerminalScreen)instance.Gui.getScreen()).getTerminal().close();
+                instance.Gui.dispose();
             }
-            catch(IOException e) {
+            catch(Exception e) {
             }
         }
     }

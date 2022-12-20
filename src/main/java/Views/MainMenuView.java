@@ -1,62 +1,71 @@
 package Views;
 
-import Controllers.CalendarController;
 import Controllers.MainMenuController;
-import Main.Main;
 import Models.User;
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.table.Table;
 
+
+import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.Arrays;
 
 
 public class MainMenuView extends View {
 
+    private JPanel panel = new JPanel();
+
+    private JLabel welcomeUserLabel = new JLabel("Welcome "+User.getLoggedUser().getUsername());
+
+    private JLabel dateLabel;
+
+    private LocalDate date;
+
+    private JButton mainCalendarButton = new JButton("Full calendar");
+
+    private JButton aboutMeButton = new JButton("About me");
+
+    private JButton logoutButton = new JButton("Log out");
+    private JTable table = new JTable();
+
+    private JPanel leftPanel = new JPanel();
+    private JPanel rightPanel = new JPanel();
     public MainMenuView() {
         super("Menu");
+        createComponents();
+        Container container = getContentPane();
+        container.add(panel);
+        setup();
+
+    }
+
+    public void createComponents(){
         LocalDate date = java.time.LocalDate.now();
-        Panel panel = Panels.horizontal();
-        Panel leftPanel = Panels.vertical();
-        Panel rightPanel = Panels.vertical();
-        panel.addComponent(leftPanel).addComponent(rightPanel);
 
-        panel.setLayoutManager(new GridLayout(2));
-        rightPanel.addComponent(new Label("Welcome: "));
-        rightPanel.addComponent(new Label(User.getLoggedUser().getUsername()));
-        rightPanel.addComponent(new EmptySpace(new TerminalSize(0,1)));
-        rightPanel.addComponent(new EmptySpace(new TerminalSize(0,1)));
+        panel.add(leftPanel);
+        panel.add(rightPanel);
+        panel.setLayout(new GridLayout(0,2));
+        leftPanel.setLayout(new BorderLayout());
+        rightPanel.setLayout(new GridLayout(0,1));
+        rightPanel.add(welcomeUserLabel);
+        welcomeUserLabel.setHorizontalAlignment(JLabel.CENTER);
+        welcomeUserLabel.setFont(new Font(Font.SERIF, Font.PLAIN,  20));
+        dateLabel = new JLabel("Today's schedule! \n Date: "+ date);
+        leftPanel.add(dateLabel, BorderLayout.PAGE_START);
 
-        leftPanel.addComponent(new Label("Todays schedule!\n Date: "+ date));
-
-        Table<Object> table = new Table<Object>("");
-        ((MainMenuController)Controller).SearchCalendar(table, date);
-
-        leftPanel.addComponent(table
-                .setPreferredSize(new TerminalSize(70, 20))
-                .withBorder(Borders.singleLine())
-        );
-
-        rightPanel.addComponent(new ActionListBox()
-                .addItem("Full calendar", ()->{
-                    ((MainMenuController)Controller).ToCalendar();
-                })
-                .addItem("About us", ()->{
-                    ((MainMenuController)Controller).ToAbout();
-                })
-        );
-
-
-        panel.addComponent(new EmptySpace(new TerminalSize(0,2)));
-        panel.addComponent(new EmptySpace(new TerminalSize(0,2)));
-
-        panel.addComponent(new Button("Log out", () ->{
+        table = ((MainMenuController)Controller).SearchCalendar(date);
+        leftPanel.add(new JScrollPane(table));
+        mainCalendarButton.addActionListener(e -> {
+            ((MainMenuController)Controller).ToCalendar();
+        });
+        aboutMeButton.addActionListener(e -> {
+            ((MainMenuController)Controller).ToAbout();
+        });
+        logoutButton.addActionListener(e ->{
             ((MainMenuController)Controller).Logout();
-        }));
+        });
+        rightPanel.add(mainCalendarButton);
+        rightPanel.add(aboutMeButton);
+        rightPanel.add(logoutButton);
 
-
-        setHints(Arrays.asList(Window.Hint.CENTERED));
-        setComponent(panel);
     }
 }

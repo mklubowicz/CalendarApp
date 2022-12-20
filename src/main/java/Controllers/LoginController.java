@@ -5,7 +5,6 @@ import Models.User;
 import Views.MainMenuView;
 import Views.LoginView;
 import Views.View;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 
 
 public class LoginController extends Controller{
@@ -17,10 +16,9 @@ public class LoginController extends Controller{
             View LoginView = new LoginView();
             UIManager.popWindow();
             UIManager.addWindow(LoginView);
-            UIManager.showMessageDialog("", "User not found", MessageDialogButton.OK);
+            UIManager.showMessageDialog("", "User not found");
             return;
         }
-
         View MainMenu = new MainMenuView();
         UIManager.popWindow();
         UIManager.addWindow(MainMenu);
